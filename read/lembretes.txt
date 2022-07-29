@@ -1,10 +1,48 @@
 ================================================================================================================================================================================
 mod 01
 
-# 
+# É uma boa prática ter uma entrada única na aplicação web;
+# Se na URL não foi especificado um arquivo, o servidor PHP automaticamente chamará o arquivo index.php;
+# Se uma rota/URL não foi encontrada devemos devolver o status HTTP 404
+# Também é boa prática usar URLs amigáveis (mais legíveis)
+# PHP possui uma variável "super global" chamada $_SERVER que tem vários informações úteis sobre a requisição
+# Através dela podemos obter a URL: $_SERVER['PATH_INFO']
+# Podemos usar o comando switch, case, default para tomar decisões no código
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+# com o comando: php -S localhost:8000 
+# usando o alvo na pasta public, por questões de mais segurança utilizar junto ao comando anterior: php -S localhost:8000 -t public
+
+## Terminamos o último vídeo comentando sobre a possibilidade de termos URLs mais amigáveis e um ponto único de entrada na nossa aplicação que controlasse as requisições e realizasse 
+ações quando necessário. Agora criaremos esse ponto único de entrada do nome de arquivo index.php, portanto, criaremos esse arquivo na pasta "public".
+Se digitarmos qualquer coisa na URL (por exemplo, http://localhost:8080/aasdfas) sem uma extensão, o servidor web ainda assim buscará pelo arquivo index.php.
+por outro lado se digitar qualquer coisa com a extensão e caso naõ existente irá apresentar erro de não encontrado.
+caso o arquvo seja existente o servidor irá direcionar a rota ou arquivo existente.
+
+## pode criar regras de acesso as rotas de arquivos criando um arquivo de rotas. no frameworks ultilizados no php por padrão já exite este arquivo chamado de routers
+nele por informar a entrada principal, condições de regras de acesso com o logins etc.
+
+## para capturar uma rota acessada no navegador, exemplo:
+
+var_dump($_SERVER['PATH_INFO['PATH_INFO'])
+
+e com isso pode fazer uma regra de acesso com o por exemplo no arquivo de rotas a condição exemplo:
+
+if (($_SERVER['PATH_INFO['PATH_INFO'] === 'nome_do_arquivo_de_rota') {
+    require ou return a outra rota do tipo login ou ect...
+}
+
+no exemplo deste projeto aplicando para um requisção mais amigável sem obrigar a informar a extensão do arquivo do tipo php ou direcionar com outros nomes de dominio:
+
+if ($_SERVER['PATH_INFO'] === '/listar-cursos'){
+    require 'listar-cursos.php';
+} elseif ($_SERVER['PATH_INFO'] === '/novo-curso') {
+    require 'formulario-novo-curso.php';
+};
+
+como isso tem unico arquivo de ponto de entrada no controle das rotas do dominio.
+Toda e qualquer requisição que chegar em nosso servidor passará pelo arquivo index.php que dá permissão para relização nos controles de rotas. 
+
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 ================================================================================================================================================================================

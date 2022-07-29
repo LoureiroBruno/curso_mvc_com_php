@@ -1,0 +1,23 @@
+## esse projeto precisa desses requisitos ##
+
+** necessário ter instalado php 7.4 ou superior
+    sudo apt install software-properties-common
+    sudo add-apt-repository ppa:ondrej/php
+    sudo apt update
+    sudo apt install php8.1
+    sudo apt install php8.1-mbstring php8.1-xmlrpc php8.1-soap php8.1-gd php8.1-xml php8.1-cli php8.1-zip php8.1-bcmath php8.1-tokenizer
+    
+** necessário ter a extensão sqlite 
+    habilitado por padrão no linux
+    ambiente windows
+    habiliat comando php --ini 
+    remover ; ficando extension=pdo_sqlite
+
+** necessário ter instalado composer 
+    habilitar o composer dentro da raiz do projeto
+    composer install
+
+
+** mapamento de erros possiveis erros:
+00 - Setup tool cannot configure caches without doctrine/cache 1.11 or symfony/cache
+00 - composer require symfony/cache
