@@ -27,7 +27,7 @@ nele por informar a entrada principal, condições de regras de acesso com o log
 var_dump($_SERVER['PATH_INFO['PATH_INFO'])
 
 e com isso pode fazer uma regra de acesso com o por exemplo no arquivo de rotas a condição exemplo:
-
+ 
 if (($_SERVER['PATH_INFO['PATH_INFO'] === 'nome_do_arquivo_de_rota') {
     require ou return a outra rota do tipo login ou ect...
 }
@@ -48,18 +48,272 @@ Toda e qualquer requisição que chegar em nosso servidor passará pelo arquivo 
 ================================================================================================================================================================================
 mod 02
 
-# 
+# Conhecemos o padrão arquitetural MVC
+# MVC define 3 camadas:
+# Modelo: Classes com a lógica de negócio e persistência
+# View: Arquivos com o código HTML
+# Controller: Classes que ligam o Model e View
+# Vimos também que existe um FrontController (também chamado de Dispatcher)
+# Ele representa a entrada da aplicação e recebe todas as requisições
+# Ele decide qual controller específico a usar
+# O padrão MVC não nasceu especificamente para a web;
+# O padrão sofreu algumas adaptações para funcionar e atender as aplicações web;
+# Por isso também é chamado de MVC Web, MVC Tipo 2 ou MVC Action Based.
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+## na continuação na criação do arquivo do tipo controller das requisições vindas de um url.
+foi criado uma classe ListarCuros, como o metodo construct com o atributo processaArquivos. que esse mesmo metodo retorna atraves do entityManager todos os cursos cadastrados na tabela curso
+porem a ideia correta, que na classe do tipo view, seja instanciado o objeto da classe ListarCuros de forma separada.
+exemplo:
+<?php
+
+namespace Alura\Cursos\Controller;
+
+use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Infra\EntityManagerCreator;
+
+class ListarCursos
+{
+    private $repositorioDeCursos;
+
+    public function __construct()
+    {
+        $entityManager = (new EntityManagerCreator())
+            ->getEntityManager();
+         $this->repositorioDeCursos = $entityManager
+             ->getRepository(Curso::class);
+    }
+
+    public function processaRequisicao()
+    {
+
+        $cursos = $this->repositorioDeCursos->findAll();
+    }
+}
+
+mas seguindo o exemplo inseriu o html juntamente com o controlador das requsições recebidas. de forma incorreta
+
+public function processaRequisicao()
+{
+    $cursos = $this->repositorioDeCursos->findAll();
+
+    ?>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Listar cursos</h1>
+            <a href="/novo-curso" class="btn btn-primary mb-2">
+                Novo Curso
+            </a>
+        </div>
+        <ul class="list-group">
+            <?php foreach ($cursos as $curso): ?>
+                <li class="list-group-item">
+                    <?= $curso->getDescricao(); ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    </body>
+    </html>
+    <?php
+}
+
+## em modulos seguindos foram dividos das classes referente as models com as classes controladas monitoradas pelo entityManager e as views. 
+## dentro dos controllers foi criado o arquivo no intuito de controlador das rotas foi inserido no no caminho das classes criadas ao inves de arquivos como dado anteriormente.
+
+** arquivo index 
+
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Alura\Cursos\Controller\FormularioInsercao;
+use Alura\Cursos\Controller\ListarCursos;
+
+switch ($_SERVER['PATH_INFO']) {
+    case '/listar-cursos':
+        $controlador = new ListarCursos();
+        $controlador->processaRequisicao();
+        break;
+    case '/novo-curso':
+        $controlador = new FormularioInsercao();
+        $controlador->processaRequisicao();
+        break;
+    default:
+        echo "Erro 404";
+        break;
+
+}
+
+# mas indo nos padrões do mvc, foi dividido no exemplo do projeto na camada do controladores a classe do repositorio de cursos. e criado a classe de visualização importando o html ao controlador 
+e dentro da camada de view, foi criado um tamplet padrão que será inserido nas classes de visualização com os require de header e footer em todas as pagina do modelo inserido.
+## Vimos também que existe um FrontController (também chamado de Dispatcher) o arquivo (index)
+
+# em um frameworks é comum que o arquivo index, esteja dentro da pasta chamada routers, nele irá verificar junto as requisições qual controlador correspondente a enviar.
+
+# nesse projeto o arquivo index, funciona como o  Dispatcher, na verificação no controloador das requisições vinda do navegador. que encaminhado pra o controlador correspondente que foi recebido 
+atraves do metodo post. que foi inserido no html com o nome da rota no metodo post. dai em diante o proprio controlador que foi chamado (exemplo ListarControlador) irár verificar junto ao model ou não 
+na buscar ou persistencia dos dados(no exemplo a propria calsse controladora é moninotada pelo entityManager (representa o model)). que o model retorna ao controlador invocado.
+dai segue a ser enviado a view existente no exemlo no html(listra-cursos)
+
+## no entendmento do conceito, se aplicará de maineira mais simples usando um frameworks que trabalha com as camandas de mvc. Já com as divisões logicas em pastas controladores da regra de negocio,
+enquanto as rotas que recebe as requsições vida das views representa na interatividade dos usuarios. pois é recomendado que a cada inserção seja redirecionado que junto a ela haver uma interação
+em resposta.
 -------------------------------------------------------------------------------------------------------------------------------------------
 ================================================================================================================================================================================
 mod 03
 
-# 
+# Para ler os dados enviados da requisição existem variáveis "super globais" como $_REQUEST, $_POST e $_GET
+# Para validar e limpar os dados da requisição podemos usar a função filter_input
+# Existem diversos filters já prontos
+# Também existe a função `filter_var' para aplicar filtros em qualquer variável
+# Mais filtros no link: https://www.php.net/manual/pt_BR/book.filter.php
+# Vimos como trabalhar com cabeçalhos no mundo PHP
+# Podemos usar a função genérica 'header' mas também específicos como http_response_code
+# Vimos como funciona o redirecionamento, isto é, chamar automaticamente uma nova URL pelo navegador
+# Para tal o servidor precisa devolver o cabeçalho Location para o navegador usando a função header
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+# além do que já existe na parte de segurança ao ultilizar um orm que no caso usado o orm do tipo doctrine. que a segurança em defesa do sqlinjection.
+com a aplicação nativa pdo com o driver do banco ulitilzado 
+exemplo: 
+        prepare("INSERT INTO artigos (titulo, conteudo) VALUES (?, ?)"); 
+        $inserirArtigo->bind_param('ss', $titulo, $conteudo);
+        $inserirArtigo->execute();
+       
+pode aplicar também filtro na variaveis recebidas do navegados atraves dos verbos post, get etc. antes mesmo de ir ao entidade relacionada. 
+
+existem na variedade de filtro já criados no php, que podem ser aplicados conforme a necessidade da aplicação.
+no exemplo:
+
+public function processaRequisicao(): void
+{
+    $descricao = filter_input(
+        INPUT_POST,
+        'descricao',
+        FILTER_SANITIZE_STRING);
+
+    $curso = new Curso();
+    $curso->setDescricao($descricao);
+
+    $this->entityManager->persist($curso);
+    $this->entityManager->flush();
+}
+
+## O FILTER_SANITIZE_STRING remove tags, caracteres especiais, e ainda pode receber outras configurações. Todas as opções de filtros e suas descrições podem ser encontradas na documentação do PHP.
+## Se ao invés do corpo da requisição quiséssemos filtrar os dados da URL, bastaria utilizarmos o INPUT_GET. 
+## Já se quiséssemos filtrar uma variável já definida, poderíamos chamar a função filter_var(), que funciona recebendo, como parâmetros, a $variavel e um dos filtros disponíveis.
+
+## Com filter_input podemos filtrar os dados provenientes das requisições HTTP. 
+Podemos filtrar os valores recebidos em $_GET, $_POST, $_COOKIE, $_SERVER, e mais… 
+Já a filter_var serve para filtrarmos variáveis comuns em nosso código.
+
+## Ainda precisamos implementar uma forma de redirecionarmos o usuário depois da inserção de um curso. 
+O PHP por si só não consegue fazer isso, já que ele roda no servidor, e isso não é uma responsabilidade dele. 
+Entretanto, o servidor pode pedir para o navegador redirecionar.
+
+## Como vimos em outros cursos, existem cabeçalhos HTTP - informações que o servidor pode mandar ao cliente além do corpo HTML. 
+Por exemplo, o servidor pode informar uma URL para a qual o navegador deverá seguir. Então através do uso com o php, irá solicitar que o servidor faça um redirecionamento da pagina.
+
+## apos a conclusão de uma determinada ação, seguindo no exemplo usado no desenvolvimento deste projeto. toda vez que haver a persistir os dados no banco
+realizar um redirect no uso do php com a função existentes em frameworks como o laravel. ou php puro usar o cabecalho para passar as informações ao navegador
+como o header('Location: /nome_do_arquivo_da_view');
+nesta função do header, o PHP irá substituir qualquer valor que já exista lá. Entretanto, se não quisermos realizar essa substituição, podemos passar um parâmetro false.
+header('Location: /listar-cursos', false);
+
+##  O HTTP também nos fornece um status de resposta, ou seja, um código informando o que aconteceu na requisição. 
+Como terceiro argumento, podemos passar um status, e um status comum de redirecionamento é o 302, que significa "movido temporariamente" (na prática, apenas "redirecionar").
+
+header('Location: /listar-cursos', false, 302);
+
+## Se quisermos exibir uma mensagem e depois fazer o direcionamento, teremos que utilizar uma tecnologia que rode do lado do cliente (ou seja, do navegador), como o JavaScript.
+exemplo 
+
+$retorno = array();
+$retorno["sucesso"] = true;
+$retorno["cadastradoEmail"] = true;
+return json_encode($retorno); 
+
+retornando a views com o o uso do js realiza o redirecionado da pagina e uso de mensagem de interação.
+
+let sucesso = $.parseJSON(data)["sucesso"];
+let cadastradoEmail = $.parseJSON(data)["cadastradoEmail"];
+
+if (sucesso && cadastradoEmail) {
+
+    Swal.fire({
+        type: 'success',
+        title: 'Email do usuário <u>CADASTRADO</u> com sucesso!',
+        showConfirmButton: true,
+    }).then((result) => {
+        if (result.value) {
+            window.location.href = "{{ route('nome_da_rota')}}"
+        }
+    })
+
+    $('#buttonResetar').fadeIn();
+    $('#addEmail').fadeOut();
+
+}
+
+## com o uso de frameworks por através do modelo mvc, existe dentro do conceito dos controladores, as rotas. que existe um arquivo como os nome da rota e respectivo endeço 
+dos seus controllers. e nesse mesmo arquivo de rotas, o servidor sempre apontará com arquivo no fluxo de entrada da aplicação. exemplo:
+
+Route::get('/', function () {
+    return view('inicial_login');
+});
+
+
+poŕem seguino o exemplo deste projeto, foi criado um arquivo de rotas como mencionado.
+
+<?php
+
+use Alura\Cursos\Controller\FormularioInsercao;
+use Alura\Cursos\Controller\ListarCursos;
+use Alura\Cursos\Controller\Persistencia;
+
+$rotas = [
+    '/listar-cursos' => ListarCursos::class,
+    '/novo-curso' => FormularioInsercao::class,
+    '/salvar-curso' => Persistencia::class
+
+];
+
+return $rotas;
+
+mas diferente do padrão de um freamwork, tb usa um arquivo index, que irá gerenciar a entrada das rotas. e ao subir o servidro php.
+# php -S localhost:8000 -t public
+aponta ao alvo da public com o arquivo index.
+
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Alura\Cursos\Controller\InterfaceControladorRequisicao;
+
+$caminho = $_SERVER['PATH_INFO'];
+$rotas = require __DIR__ . '/../config/routes.php';
+
+if (!array_key_exists($caminho, $rotas)) {
+    echo "Erro 404";
+    exit();
+}
+
+$classeControladora = $rotas[$caminho];
+/** @var InterfaceControladorRequisicao $controlador */
+$controlador = new $classeControladora();
+$controlador->processaRequisicao();
+
+com iso a aplicação fica dinamica, ao ponto de criar novas rotas para seus novo repositorios, sem a necessiade de alteração no arquivo do index. pois sempre irá verificar caso na
+exitencia do indices do cabelhaço enviado e exitindo gera a instancia da repositorio da entidade relacionada de forma automatica. sem crescer o código!
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 ================================================================================================================================================================================
