@@ -17,12 +17,7 @@
         <?php endforeach; ?>
     </ul> -->
 
-<?php include __DIR__ . '/../fim-html.php'; ?>
-
-
 <div class="container">
-
-        </br>
 
     <a href="/novo-curso" class="btn btn-success btn-sm">
         Novo curso
@@ -31,11 +26,17 @@
     <table class="table table-hover">
 
         <tr class="table-light">
-            <th scope="col"><ion-icon name="finger-print-outline"></ion-icon> Id</th>
-            <th scope="col"><ion-icon name="information-outline"></ion-icon> Descricão</th>
-            <th scope="col" style="text-align: end;"><ion-icon name="construct-outline"></ion-icon> Ações</th>
+            <th scope="col">
+                <ion-icon name="finger-print-outline"></ion-icon> Id
+            </th>
+            <th scope="col">
+                <ion-icon name="information-outline"></ion-icon> Descricão
+            </th>
+            <th scope="col" style="text-align: end;">
+                <ion-icon name="construct-outline"></ion-icon> Ações
+            </th>
         </tr>
-        
+
         <?php foreach ($cursos as $curso) : ?>
 
             <tbody>
@@ -58,10 +59,18 @@
 
         </br>
         <tr class="table-light">
-            <th scope="col"><ion-icon name="finger-print-outline"></ion-icon> Id</th>
-            <th scope="col"><ion-icon name="information-outline"></ion-icon> Descricão</th>
-            <th scope="col" style="text-align: end;"><ion-icon name="construct-outline"></ion-icon> Ações</th>
+            <th scope="col">
+                <ion-icon name="finger-print-outline"></ion-icon> Id
+            </th>
+            <th scope="col">
+                <ion-icon name="information-outline"></ion-icon> Descricão
+            </th>
+            <th scope="col" style="text-align: end;">
+                <ion-icon name="construct-outline"></ion-icon> Ações
+            </th>
         </tr>
 
     </table>
 </div>
+
+<?php include __DIR__ . '/../fim-html.php'; ?>

@@ -1,9 +1,19 @@
 <style>
     header {
-	background: url("bg.jpg");
-	padding: 20px 0;
-	background-position: right;
-}
+        background: url("bg.jpg");
+        padding: 40px 0;
+        background-position: right;
+    }
+
+    main {
+        padding-top: 200px;
+    }
+
+    #footer {
+        text-align: center;
+        padding-top: 200px;
+        width: 100%;
+    }
 </style>
 
 <!DOCTYPE html>
@@ -21,4 +31,7 @@
     <header>
         <div class="container">
             <h1 style="color: white;"><?= $titulo; ?></h1>
-           
+        </div>
+    </header>
+    <br>
+    <main>

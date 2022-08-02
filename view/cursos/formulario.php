@@ -1,8 +1,5 @@
 <?php include __DIR__ . '/../inicio-html.php'; ?>
 
-<?php include __DIR__ . '/../fim-html.php'; ?>
-
-<br>
 <div class="container">
     <form action="/salvar-curso<?= isset($curso) ? '?id=' . $curso->getId() : ''; ?>" method="post">
         <div class="form-group">
@@ -15,3 +12,6 @@
         </a>
     </form>
 </div>
+
+<?php include __DIR__ . '/../fim-html.php'; ?>
+
