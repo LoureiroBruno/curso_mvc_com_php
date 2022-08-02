@@ -24,7 +24,7 @@
 
         </br>
 
-    <a href="/novo-curso" class="btn btn-primary mb-2">
+    <a href="/novo-curso" class="btn btn-success btn-sm">
         Novo curso
     </a>
 
