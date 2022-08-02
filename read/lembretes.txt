@@ -319,10 +319,95 @@ exitencia do indices do cabelhaço enviado e exitindo gera a instancia da reposi
 ================================================================================================================================================================================
 mod 04
 
-# 
+# A função isset(..) para testar se uma variável existe
+# A função extract(..) que recebe um array associativo e define variáveis para cada chave
+# Podemos ativar a buffer de saída do buffer com o ob_start()
+# O método ob_get_contents() devolve conteúdo do buffer
+# O método ob_clean() limpa o buffer
+# O método ob_get_clean devolve conteúdo e limpa o buffer
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+# seguindo na ideia do front contoller o arquivo index.e agora nossa aplicação pode crescer com mais facilidade. Sendo assim, vamos implementar a função de excluir um curso.
+## para cada linha do curso encontrada dentro do foreach, será adicionado o botão de excluir.
+
+<ul class="list-group">
+    <?php foreach ($cursos as $curso): ?>
+     <li clas  s="list-group-item d-flex justify-content-between">
+          <?= $curso->getDescricao(); ?>
+            <a href="/excluir-curso" class="btn btn-danger btn-sm">
+                Excluir
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+**  <li class="list-group-item d-flex justify-content-between">
+o que fará com que essa lista tenha um display flex (uma forma de posicionarmos elementos) e que os elementos contidos nesse display terão um espaço entre eles. Dessa forma, o próprio navegador
+fará com que o conteúdo seja posicionado em lados opostos da tela.
+
+## criado uma nova rota de excluir o cursos no arquivo de routers
+## criando a nova classe controladora de exclusão cursos e dentro da classe implementa InterfaceControladorRequisicao
+pois dentro dela exite o metodo processaRequisicao. que será obterá o classe de entidade de cursos moninotada pelo a EntityManagerCreator
+e com seus uso poderá persitir os dados de deleção, que também forma já validados atraves de uso de filtros.
+
+class Exclusao implements InterfaceControladorRequisicao
+{
+
+    public function processaRequisicao(): void
+    {
+        $id = filter_input(INPUT_GET,
+            'id',
+            FILTER_VALIDATE_INT);
+
+        if (is_null($id) || $id === false) {
+            header('Location: /listar-cursos');
+        }
+
+    }
+}
+
+se o valor passado for vaio ou nulo ou falso será redirecionado a pagina inicial da listagem dos cursos
+mas como mencionando após validado os dados obteidos no metodo GET. co o valor de id, será removido o cursos de acordo com o id passado
+
+
+public function processaRequisicao(): void
+{
+    $id = filter_input(INPUT_GET,
+        'id',
+        FILTER_VALIDATE_INT);
+
+    if (is_null($id) || $id === false) {
+        header('Location: /listar-cursos');
+        return;
+    }
+
+    $curso = $this->entityManager->getReference(Curso::class, $id);
+    $this->entityManager->remove($curso);
+    $this->entityManager->flush();
+    header('Location: /listar-cursos');
+
+}
+
+lembrando que na view, deve ser obtida o id de acordo com o click, inserindo o objeto curso no metodo get id
+
+<a href="/excluir-curso?id=<?= $curso->getId(); ?>" class="btn btn-danger btn-sm">
+    Excluir
+</a>
+
+criado a classe controladora de edição referente ao repositorio cursos. porém de uma forma simplificada com o uso do orm doctrine, foi usado o metodo merge()
+que faz com que o Doctrine passe a gerenciar a entidade como se tivesse sido recuperada do banco.
+
+ao inves de ter ralizado uma consulta de buscar o id
+$busca = $entityManager->getRepository(Curso::class)->findOneBy([
+    'id' => $idBuscado
+]);
+
+e como o valor validado, inserido com o novo valor no metodo setNome('nome do curso alterado);
+
+
+*** Quando esse tipo de erro acontece, pode ser um problema de permissão na pasta "Temp" (e nosso instrutor nunca viu esse erro acontecer em outras plataformas, apenas no Windows). 
+Para consertarmos isso, no terminal, executaremos o comando vendor\bin\doctrine orm:generate-proxies. 
+Isso fará com que o Doctrine processe as nossas entidades e gere as classes Proxy.
 -------------------------------------------------------------------------------------------------------------------------------------------
 ================================================================================================================================================================================
 mod 05

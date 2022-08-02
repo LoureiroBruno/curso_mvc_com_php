@@ -17,6 +17,7 @@
             <input type="text" id="descricao" name="descricao" class="form-control">
         </div>
         <button class="btn btn-primary">Salvar</button>
+        <button class="btn btn-danger">Cancelar</button>
     </form>
 </div>
 </body>

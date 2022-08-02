@@ -26,6 +26,11 @@ class Persistencia implements InterfaceControladorRequisicao
             FILTER_SANITIZE_STRING
         );
 
+        if (empty($descricao)) {
+            header('Location: /listar-cursos');
+            return;
+        }
+
         $curso = new Curso();
         $curso->setDescricao($descricao);
 
