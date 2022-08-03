@@ -47,6 +47,7 @@ class RealizarLogin implements InterfaceControladorRequisicao
         }
 
         $_SESSION['usuario_logado'] = true;
+        $_SESSION['nome_usuario'] = $usuario->getEmail();
 
         header('Location: /listar-cursos');
     }

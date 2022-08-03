@@ -22,8 +22,24 @@ class Usuario
      */
     private $senha;
 
+    
+    /**
+     * Get the value of email
+     */ 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $senhaPura
+     * @return boolean
+     */
     public function senhaEstaCorreta(string $senhaPura): bool
     {
         return password_verify($senhaPura, $this->senha);
     }
 }
+

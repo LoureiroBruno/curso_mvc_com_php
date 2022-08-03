@@ -37,7 +37,7 @@ class FormularioEdicao extends ControllerComHtml implements InterfaceControlador
 
         echo $this->renderizaHtml('cursos/formulario.php', [
             'curso' => $curso,
-            'titulo' => 'Alterar curso ' . $curso->getDescricao(),
+            'titulo' => 'Editar Curso'
         ]);
     }
 }

@@ -470,7 +470,83 @@ mod 06
 # 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+## exemplificando o conceito de sessão.
+
+criado uma condição na verificação de acesso as rotas no arquivo routes da pasta config.
+onde toda a entrada e saida da aplicação se inicia no arquivo index.
+
+então após a verificar se existe alguma rota dentro do dominio, conforme foi digitado pelo usuário. 
+tipo localhost:8000/o que o usuario digitou existe o que o usuario digitou nesse array do dominio?
+
+exemplo:
+
+$caminho = $_SERVER['PATH_INFO'];
+$rotas = require __DIR__ . '/../config/routes.php';
+
+if (!array_key_exists($caminho, $rotas)) {
+    http_response_code(404);
+    exit();
+}
+
+mas a perguta esta no negativo, ou seja, se for verdadeiro, não existir o endereço digitado. entra no if redirecionando a pagina.
+caso contrário continua a stack da aplicação.
+
+## na verificação de sessões é aplicado nesse momento.
+se desejado haver um controle de rotas tipo criando um sistema de login de acesso.
+abaixo da primeira verificação acima, será monitorada todas as ações da aplicação guaradndo as sessões, que posteriormente pode ser usado na propria aplicação ou em bancos com logs etc.
+
+if (!isset($_SESSION['logado']) && $caminho !=='/login' && $caminho !=='/realiza-login') {
+    header('Location: /login');
+    exit();
+}
+
+na condição retrata, se o usuario não estiver logado e o endereço de nome de rota digitado pelo usuario não for direfernte dos nomes de rotas login e realiza-login
+ele entra no if e redireciona ate a pagina principal dominio/login ou seja, se for verdadeira.
+aplicando em regra, não possui a sessão de login e o nome da rota for listar-cursos, novo-curso ou qualquer coisa diferente de login, será direcionado ao login. 
+
+dai em diante mesmo que não possua a sessão, mas se o nome de rota for igual ao login, a condição não e verdadeira e o codigo sem com a stack normal.
+que na stack normal ao digitar o dominio/login irá a pagina de login. continua com a segurança nas rotas.
+
+dai se o usuário tiver amarmazenado a sessão, mesmo que a digite o login ou não login. a condição não será verdadeira e o codigo sem com a stack normal.
+tipo tem a sessão e digita o dominio/listar-cursos e ao fazer isso vai a rota listar cursos. se digitar dominio/login vai a rota de login.
+
+e so perderá a sessão se fechar o navegador ou realizar um destroy da sessão amarzenada nos cokies no navegador da pagina.
+
+## se quiser aplicar a mesma verificação realizada acima mais de forma mais simplificada, pode-se fazer.
+
+$ehRotaDeLogin = stripos($caminho, 'login');
+
+if (!isset($_SESSION['logado']) && $ehRotaDeLogin === false) {
+    header('Location: /login');
+    exit();
+}
+
+ou
+
+## Desde a versão 8.0 do PHP nós temos uma função mais amigável para verificar se determinada string existe em outra. 
+Ou seja, para verificar se a string "login" existe em nossa URL nós podemos utilizar essa outra função. O nome dela é str_contains. Então o código ficaria:
+
+$ehRotaDeLogin = str_contains($caminho, 'login');
+
+## Para proteger nossa aplicação, verificamos se o dado logado estava armazenado na sessão do usuário. 
+Mas não podemos proteger todas as rotas de nossa aplicação, senão nem o formulário de login será acessível pelo usuário. 
+Por isso nós “abrimos” todas as rotas que tenham “login” em sua URL. Para isso utilizamos a função stripos.
+
+## para realizar o processo de logout, deve se limpar os dados contidos no navegador no cokies
+seguindo no exemplo do projeto:
+
+namespace Alura\Cursos\Controller;
+
+
+class Deslogar implements InterfaceControladorRequisicao
+{
+
+    public function processaRequisicao(): void
+    {
+        session_destroy();
+        header('Location: /login');
+    }
+}
 -------------------------------------------------------------------------------------------------------------------------------------------
 ================================================================================================================================================================================
 mod 07
