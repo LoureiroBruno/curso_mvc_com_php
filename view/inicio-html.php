@@ -1,18 +1,42 @@
 <style>
     header {
         background: url("bg.jpg");
-        padding: 40px 0;
+        padding: 80px 0;
         background-position: right;
     }
 
-    main {
-        padding-top: 200px;
+    #titulo-curso {
+        padding-top: 30px;
     }
 
-    #footer {
-        text-align: center;
-        padding-top: 200px;
-        width: 100%;
+    nav {
+        position: absolute;
+        top: 10px;
+        right: 50;
+    }
+
+    nav li {
+        display: inline;
+        margin: 0 0 0 15px;
+    }
+
+    nav a {
+        /* text-transform: uppercase; */
+        color: #FFFFFF;
+        /* font-weight: bold; */
+        font-size: 18px;
+        text-decoration: none;
+    }
+
+    main {
+        padding-top: 150px;
+    }
+
+    footer {
+        background: url("formacoes.png");
+        padding: 80px 0;
+        background-position: right;
+        margin-top: 250px;
     }
 </style>
 
@@ -30,8 +54,15 @@
 <body>
     <header>
         <div class="container">
-            <h1 style="color: white;"><?= $titulo; ?></h1>
+            <h1 id="titulo-curso" style="color: white;"><?= $titulo; ?></h1>
         </div>
+
+        <nav>
+            <ul>
+                <li><a href="/login">Logout</a></li>
+            </ul>
+        </nav>
+
     </header>
     <br>
     <main>

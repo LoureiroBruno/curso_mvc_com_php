@@ -327,7 +327,7 @@ mod 04
 # O método ob_get_clean devolve conteúdo e limpa o buffer
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-# seguindo na ideia do front contoller o arquivo index.e agora nossa aplicação pode crescer com mais facilidade. Sendo assim, vamos implementar a função de excluir um curso.
+## seguindo na ideia do front contoller o arquivo index.e agora nossa aplicação pode crescer com mais facilidade. Sendo assim, vamos implementar a função de excluir um curso.
 ## para cada linha do curso encontrada dentro do foreach, será adicionado o botão de excluir.
 
 <ul class="list-group">
@@ -412,10 +412,56 @@ Isso fará com que o Doctrine processe as nossas entidades e gere as classes Pro
 ================================================================================================================================================================================
 mod 05
 
-# 
+# Como gerar uma senha segura usando o algoritmo ARGON2I
+# Usar no código PHP a função password_verify($senhaPura, $senhaHash)
+# Como inserir dados com Doctrine através de SQL
+# Como validar um email usando a função filter_input (FILTER_VALIDATE_EMAIL)
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+## inserir no banco usuarios na tabela de usuarios via comando terminal com o uso # php -a
+## dbal:run-sql 'INSERT INTO usuarios (email, senha) VALUES ("bruno.loureiro@sis.com.br", "$argon2i$v=19$m=65536,t=4,p=1$aThhVlo2VGI1N1lFYWpIQg$4Z9BaUZxrIqtGBVzJEDcQucRC4nHkKOnryVZAAs0WyI")';
+## chave do tipo PASSWORD_ARGON2I foi gerada com o uso # password_hash('senha', PASSWORD_ARGON2I)
+
+## Já temos um formulário de Login funcional, inclusive validado pelo banco de dados. Porém, é possível acessar /listar-cursos mesmo sem estarmos logados. 
+Portanto, precisamos encontrar uma maneira de salvarmos no servidor a informação de que o usuário está logado. 
+Mas como faremos isso se no HTTP cada requisição é independente?
+
+## Para mantermos dados entre uma requisição e outra, existe um conceito do HTTP chamado "sessão", 
+que é exatamente o que faremos agora: armazenaremos um dado em sessão informando que existe um usuário logado.
+
+## através da sessões pode guardar os dados provieniente do servidor.
+session_start() cria uma sessão ou resume a sessão atual baseado em um id de sessão passado via GET ou POST, ou passado via cookie.
+exemplo no projeto, uma vez o usuário logado, o servidor retorna um endereço um hash para o navegador, e toda vez que realizar uma nova requsição ao inves de enviar todos os dados,
+envia o hash guardado no cokie do navegador.
+
+exemplo: 
+-- INDEX --
+session_start();
+
+-- CONTROLLER --
+$_SESSION['usuario_logado'] = true;
+
+-- VIEW --
+if ($_SESSION['usuario_logado'] != true) {
+        header("Location: /login");
+        die();
+    }
+
+## É importante avisar que o session_start() precisa ser chamado sempre antes de qualquer saída ter sido enviada, seja ela um echo, um var_dump(), um print_r() ou qualquer HTML. 
+Isso porque, como a sessão utiliza cookies, ela precisa estar nas informações de cabeçalho do HTTP.
+no caso o ponto de partida é o index
+
+session_start();
+if (!isset($_SESSION['usuario_logado']) && $caminho !=='/login' && $caminho !=='/realiza-login') {
+    header('Location: /login'); 
+    exit();
+}
+
+e realiza a verificação no contoller de realização de login, 
+$_SESSION['usuario_logado'] = true;
+header('Location: /listar-cursos');
+
+aplica a qualquer tipo de rota com a exeção de login ou realiza-login
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 ================================================================================================================================================================================

@@ -1,3 +1,11 @@
+<?php
+    /**forma trabalhosa ir por view */
+    // if ($_SESSION['usuario_logado'] != true) {
+    //     header("Location: /login");
+    //     die();
+    // }
+?>
+
 <?php include __DIR__ . '/../inicio-html.php'; ?>
 
 <div class="container">
