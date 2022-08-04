@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Cadastar Cursos</title>
+    <link rel="shortcut icon" href="/icone/favicon.ico">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../listar-cursos.css">
@@ -25,8 +26,13 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Lendo o conteúdo de</br><b><u><?= $titulo; ?></b></u></h5>
+                    <div class="offcanvas-header" style="background: darkseagreen;">
+                        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                            <img src="/icone/favicon.ico" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                            Lendo o conteúdo de
+                        </br>
+                            <b><u style="font-size: 30px;text-decoration-color: burlywood;"><?= $titulo; ?></b></u>
+                        </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
