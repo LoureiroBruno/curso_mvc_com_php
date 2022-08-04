@@ -3,10 +3,13 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 
 class Exclusao implements InterfaceControladorRequisicao
 {
+    use FlashMessageTrait;
+
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -27,8 +30,9 @@ class Exclusao implements InterfaceControladorRequisicao
         );
 
         if (is_null($id) || $id === false) {
-            $_SESSION['tipo_mensagem'] = 'success';
-            $_SESSION['mensagem'] = "Descrição do curso não encontrado!";
+
+            $this->defineMensagem('warning','Descrição do curso não encontrado!');
+
             header('Location: /listar-cursos');
             return;
         }
@@ -40,8 +44,9 @@ class Exclusao implements InterfaceControladorRequisicao
         
         $this->entityManager->remove($curso);
         $this->entityManager->flush();
-        $_SESSION['tipo_mensagem'] = 'success';
-        $_SESSION['mensagem'] = "Removido o registro de ID: <u><b>{$id}</b></u> com Sucesso!";
+
+        $this->defineMensagem('success', "Removido o registro de ID: <u><b>{$id}</b></u> com Sucesso!");
+        
         header('Location: /listar-cursos');
         return;
     }

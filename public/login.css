@@ -4,7 +4,7 @@ body {
 }
 
 #icone {
-    font-size: 60px;
+    font-size: 200px;
 }
 
 .login-popup-heading>h4 {
@@ -45,4 +45,16 @@ body {
 a {
     color: #258b47;
     font-size: 18px;
+}
+
+#alert-mensagem
+{
+    text-align: center;
+}
+
+
+#container-mensagem
+{
+    width: 30%;
+    padding: 1%;
 }

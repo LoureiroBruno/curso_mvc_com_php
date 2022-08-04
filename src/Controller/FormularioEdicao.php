@@ -3,10 +3,14 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessageTrait;
+use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 
-class FormularioEdicao extends ControllerComHtml implements InterfaceControladorRequisicao
+class FormularioEdicao implements InterfaceControladorRequisicao
 {
+    use FlashMessageTrait, RenderizadorDeHtmlTrait;
+    
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
      */
@@ -29,8 +33,9 @@ class FormularioEdicao extends ControllerComHtml implements InterfaceControlador
         );
 
         if (is_null($id) || $id === false) {
-            $_SESSION['tipo_mensagem'] = 'warning';
-            $_SESSION['mensagem'] = "Descrição do curso não encontrado!";
+
+            $this->defineMensagem('warning', 'Descrição do curso não encontrado!');
+            
             header('Location: /listar-cursos');
             return;
         }

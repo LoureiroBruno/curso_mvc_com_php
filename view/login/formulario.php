@@ -15,7 +15,7 @@
 <body>
     <div class="login-popup-wrap new_login_popup" id="login">
         <div class="login-popup-heading text-center">
-            <h4><i id="icone" class="fa fa-university" aria-hidden="true"></i></h4>
+            <h4><i id="icone" class="fa fa-cog fa-spin fa-3x fa-fw"></i></i></h4><span class="sr-only">Loading...</span>
         </div>
         <div class="login-popup-heading text-center">
             <h4>Cadastro de Cursos</h4>

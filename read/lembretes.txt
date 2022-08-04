@@ -467,7 +467,14 @@ aplica a qualquer tipo de rota com a exeção de login ou realiza-login
 ================================================================================================================================================================================
 mod 06
 
-# 
+# Por padrão o servidor não guarda informações ou dados entre requisições
+# Isto é principalmente por causa do protocolo HTTP que é stateless (sem manter estado)
+# Para armazenar dados entre requisições precisamos usar uma SESSION (sessão)
+# Uma session tem um ID (PHPSESSID) associado que fica salvo dentro de um arquivo de texto chamado Cookie
+# O Cookie por sua vez fica salvo no navegador
+# O navegador automaticamente envia o cookie em cada requisição
+# Uma sessão precisa ser inicializada explicitamente no PHP pelo comando session_start()
+# session_start() precisa ser chamada antes de qualquer saída
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 ## exemplificando o conceito de sessão.
@@ -547,14 +554,47 @@ class Deslogar implements InterfaceControladorRequisicao
         header('Location: /login');
     }
 }
+
+## Para adicionar mensagens que pudessem ser lidas na requisição seguinte, utilizamos novamente a sessão. Mas isso trouxe um problema: a mensagem continuava sendo
+ exibida mesmo após atualizar a página.
+
+Qual a solução encontrada para que uma mensagem fosse exibida apenas uma vez?
+Excluindo os dados de mensagem da sessão após acessá-los. é isso se chama de Flash messages.
+
+## O primeiro ponto que podemos otimizar é a definição das flash messages, que está espalhada em diversos pontos e poderia ser centralizada em um único lugar.
+a melhor forma é atraves do uso de traits, que é uma forma melhor de compartillhar o codigo de uma maneira organizada. um classe pode ter de varias traits diferente,
+enquanto na herança apenas uma classe ou implementar varias classes. mas o traits não possui a obrigatoriedade de implementar todos os metodos da classe como a abstrata.
+no uso fuinciona forma que cada classe possa trazer somente o necessário, trazendo de uma trait
+
+dentro da classe usando o use com o nome da classe pra ter acesso atraves do objeto $this acecessando os metodo ou atribitutos da trait usada.
+
+class Exclusao implements InterfaceControladorRequisicao
+{
+    use FlashMessageTrait;
+
+** com a necessidade de termos uma espécie de herança múltipla em nossas classes. 
+Precisávamos herdar de uma classe que manipulava View, e de outra que manipulava Flash messages. 
+Mas como herança múltipla não é permitida em PHP, precisamos buscar alguma alternativa.
+
+Um recurso muito interessante do PHP, chamado de Trait, nos permite ter um pedaço de código compartilhado entre classes como se ele tivesse sido escrito individualmente em cada uma delas.
+Isso inclui acessar propriedades e métodos privados.
 -------------------------------------------------------------------------------------------------------------------------------------------
 ================================================================================================================================================================================
 mod 07
 
-# 
+Existem vários padrões definidos através de PSRs (PHP Standard Recommendations)
+A organização PHP-FIG (Framework Interoperability Group) sugere e mantém a especificação destes padrões;
+** Site do PHP-FIG é https://www.php-fig.org/
+Seguindo as PSRs aumentamos a compatibilidade do nosso código entre frameworks e bibliotecas;
+Vimos as seguinte PSRs:
+** PSR-4: Autoloading
+** PSR-7: HTTP message interfaces
+** PSR-11: Container interface
+** PSR-15: HTTP Server Request Handlers
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-#
+# Para saber mais: PHP-FIG - O grupo de interoperabilidade entre frameworks já ditou diversos padrões e continua contribuindo para a comunidade do desenvolvimento PHP.
+## Sempre que for desenvolver um sistema e escolher componentes para utilizar, veja se existe alguma PSR a seguir e se o componente em questão a implementa.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 ================================================================================================================================================================================

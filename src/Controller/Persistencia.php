@@ -3,10 +3,13 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 
 class Persistencia implements InterfaceControladorRequisicao
 {
+    use FlashMessageTrait;
+    
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -27,8 +30,9 @@ class Persistencia implements InterfaceControladorRequisicao
         );
 
         if (empty($descricao)) {
-            $_SESSION['tipo_mensagem'] = 'warning';
-            $_SESSION['mensagem'] = "Campo descrição não preenchido, deve informar o curso no campo obrigatório!";
+
+            $this->defineMensagem('warning', 'Campo descrição não preenchido, deve informar o curso no campo obrigatório!');
+
             header('Location: /listar-cursos');
             return;
         }
@@ -50,8 +54,7 @@ class Persistencia implements InterfaceControladorRequisicao
         }
 
         $this->entityManager->flush();
-        $_SESSION['tipo_mensagem'] = 'success';
-        $_SESSION['mensagem'] = "Editado o registro de ID: <u><b>{$id}</b></u> com Sucesso!";
+        $this->defineMensagem('success', "Editado o registro de ID: <u><b>{$id}</b></u> com Sucesso!");
         
         header('Location: /listar-cursos', true, 302);
         return;
