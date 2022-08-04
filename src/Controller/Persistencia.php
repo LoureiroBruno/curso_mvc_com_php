@@ -27,6 +27,8 @@ class Persistencia implements InterfaceControladorRequisicao
         );
 
         if (empty($descricao)) {
+            $_SESSION['tipo_mensagem'] = 'warning';
+            $_SESSION['mensagem'] = "Campo descrição não preenchido, deve informar o curso no campo obrigatório!";
             header('Location: /listar-cursos');
             return;
         }
@@ -48,7 +50,10 @@ class Persistencia implements InterfaceControladorRequisicao
         }
 
         $this->entityManager->flush();
-
+        $_SESSION['tipo_mensagem'] = 'success';
+        $_SESSION['mensagem'] = "Editado o registro de ID: <u><b>{$id}</b></u> com Sucesso!";
+        
         header('Location: /listar-cursos', true, 302);
+        return;
     }
 }

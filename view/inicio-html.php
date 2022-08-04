@@ -1,39 +1,3 @@
-<style>
-    header {
-        background: url("bg.jpg");
-        padding: 80px 0;
-        background-position: right;
-    }
-
-    #titulo-curso {
-        padding-top: 30px;
-    }
-
-    .bg-dark {
-        --bs-bg-opacity: 0.8 !important;
-        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
-    }
-
-    :root {
-        --bs-dark-rgb: 33,, !important; 
-    }   
-
-    .navbar-toggler {
-        background-color: #9e9e9e61 !important;
-    }
-
-    main {
-        padding-top: 150px;
-    }
-
-    footer {
-        background: url("formacoes.png");
-        padding: 80px 0;
-        background-position: right;
-        margin-top: 250px;
-    }
-</style>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -42,10 +6,13 @@
     <title>Document</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../listar-cursos.css">
     <!-- JS only -->
+    <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../sweetalert2.js"></script>
 </head>
 
 <body>
@@ -82,10 +49,10 @@
                                 <a class="nav-link active" aria-current="page" href="/listar-cursos">Voltar à Página <b><u>Inicial</u></b> </a>
                             </li>
                         </ul>
-                        <!-- <form class="d-flex" role="search">
+                        <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-success" type="submit">Search</button>
-                        </form> -->
+                            <button class="btn btn-success">Search</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -93,3 +60,12 @@
     </header>
     <br>
     <main>
+    <?php if (isset($_SESSION['mensagem'])) : ?>
+        <div id="container-mensagem" class="container">
+            <div id="alert-mensagem" class="alert alert-<?= $_SESSION['tipo_mensagem']; ?>" role="alert">
+                <?= $_SESSION['mensagem']; ?>
+            </div>
+        </div>
+        <?php unset($_SESSION['mensagem']); unset($_SESSION['tipo_mensagem']);?>
+    <?php endif; ?>
+

@@ -15,7 +15,7 @@
             <input type="text" id="descricao" name="descricao" class="form-control" value="<?= isset($curso) ? $curso->getDescricao() : ''; ?>">
         </div>
         <br>
-        <button class="btn btn-primary btn-sm">Salvar</button>
+        <button id="salvar-novo-curso" class="btn btn-primary btn-sm">Salvar</button>
         <a href="/listar-cursos" class="btn btn-danger btn-sm">
             Cancelar
         </a>

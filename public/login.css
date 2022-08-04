@@ -1,0 +1,48 @@
+
+body {
+    background-color: #1e2c38f0;;
+}
+
+#icone {
+    font-size: 60px;
+}
+
+.login-popup-heading>h4 {
+    color: #e7ebed;;
+    font-size: 37px;
+    line-height: 30px;
+}
+
+#login {
+    padding-top: 100px;
+}
+
+.new_reg_popup,
+.new_login_popup {
+    border-radius: 2px;
+    min-height: 332px;
+    width: 400px;
+    margin: 0px auto;
+}
+
+.login-popup-btn {
+    background: #ff9800;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    height: 38px;
+    line-height: 28px;
+    margin: 20px auto 5px;
+    width: 150px;
+    -webkit-transition: all 700ms ease;
+    -moz-transition: all 700ms ease;
+    -ms-transition: all 700ms ease;
+    -o-transition: all 700ms ease;
+}
+
+a {
+    color: #258b47;
+    font-size: 18px;
+}

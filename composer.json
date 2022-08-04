@@ -7,6 +7,7 @@
     "require": {
         "doctrine/orm": "^2.6",
         "doctrine/annotations": "^1.13",
-        "symfony/cache": "^6.1"
+        "symfony/cache": "^6.1",
+        "realrashid/sweet-alert": "^5.1"
     }
 }

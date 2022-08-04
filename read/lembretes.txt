@@ -405,7 +405,7 @@ $busca = $entityManager->getRepository(Curso::class)->findOneBy([
 e como o valor validado, inserido com o novo valor no metodo setNome('nome do curso alterado);
 
 
-*** Quando esse tipo de erro acontece, pode ser um problema de permissão na pasta "Temp" (e nosso instrutor nunca viu esse erro acontecer em outras plataformas, apenas no Windows). 
+*** Quando esse tipo de erro acontece(excluir), pode ser um problema de permissão na pasta "Temp" (e nosso instrutor nunca viu esse erro acontecer em outras plataformas, apenas no Windows). 
 Para consertarmos isso, no terminal, executaremos o comando vendor\bin\doctrine orm:generate-proxies. 
 Isso fará com que o Doctrine processe as nossas entidades e gere as classes Proxy.
 -------------------------------------------------------------------------------------------------------------------------------------------

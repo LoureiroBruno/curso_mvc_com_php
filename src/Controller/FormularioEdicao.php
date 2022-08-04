@@ -29,6 +29,8 @@ class FormularioEdicao extends ControllerComHtml implements InterfaceControlador
         );
 
         if (is_null($id) || $id === false) {
+            $_SESSION['tipo_mensagem'] = 'warning';
+            $_SESSION['mensagem'] = "Descrição do curso não encontrado!";
             header('Location: /listar-cursos');
             return;
         }
