@@ -1,0 +1,54 @@
+html,
+body {
+    height: 100%;
+}
+html {
+    display: table;
+    margin: auto;
+}
+body {
+    display: table-cell;
+    vertical-align: middle;
+    background: #000000de;
+}
+
+#login-page {
+   width: 500px;
+}
+
+#titulo-login {
+    font-size: larger;
+}
+#loginMember{
+    padding: 10%;
+}
+
+.card {
+/*      position: absolute;
+     left: 50%;
+     top: 50%;
+     -moz-transform: translate(-50%, -50%)
+     -webkit-transform: translate(-50%, -50%)
+     -ms-transform: translate(-50%, -50%)
+     -o-transform: translate(-50%, -50%)
+     transform: translate(-50%, -50%); */
+}
+
+
+.btn, .btn-large, .btn-small {
+    background-color: darkseagreen !important;
+}
+
+#alert-mensagem
+{
+    text-align: center;
+    background: #ff087ac7;
+    color: white;
+}
+
+#container-mensagem
+{
+    width: 100%;
+    padding: 1%;
+}
+

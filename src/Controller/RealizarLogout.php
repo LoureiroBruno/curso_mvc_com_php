@@ -2,12 +2,20 @@
 
 namespace Alura\Cursos\Controller;
 
-class RealizarLogout implements InterfaceControladorRequisicao
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class RealizarLogout implements RequestHandlerInterface
 {
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $_SESSION['usuario_logado'] = false;
         session_destroy();
-        header('Location: /listar-cursos');
+        $html = [
+            header('Location: /listar-cursos')
+        ];
+        return new Response(200, [], $html);
     }
 }

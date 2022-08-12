@@ -2,26 +2,36 @@
 
 namespace Alura\Cursos\Controller;
 
-use Alura\Cursos\Infra\EntityManagerCreator;
 use Alura\Cursos\Entity\Usuario;
 use Alura\Cursos\Helper\FlashMessageTrait;
+use Doctrine\ORM\EntityManagerInterface;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RealizarLogin implements InterfaceControladorRequisicao
+class RealizarLogin implements RequestHandlerInterface
 {
+    /**composer require psr/http-server-handler*/
     use FlashMessageTrait;
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
      */
-    private $repositorioUsuarios;
+    // private $repositorioUsuarios;
+    private $entityManager;
 
-    public function __construct()
+    /**
+     * Undocumented function
+     *
+     * @var  EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $entityManager = (new EntityManagerCreator())->getEntityManager();
-        $this->repositorioUsuarios = $entityManager->getRepository(Usuario::class);
+        $this->entityManager = $entityManager
+        ->getRepository(Usuario::class);
     }
-    
-    public function processaRequisicao(): void
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $email = filter_input(
             INPUT_POST,
@@ -29,12 +39,12 @@ class RealizarLogin implements InterfaceControladorRequisicao
             FILTER_VALIDATE_EMAIL
         );
 
+
         if (is_null($email) || $email === false) {
-
-            $this->defineMensagem('danger', 'O e-mail digitado não é um e-mail válido');
-
-            header('Location: /login');
-            return;
+            $html = [
+                $this->defineMensagem('danger', 'O e-mail digitado não é um e-mail válido'),
+            ];
+            return new Response(200, ['Location' => header('Location: /login')], $html);
         }
 
         $senha = filter_input(
@@ -44,21 +54,24 @@ class RealizarLogin implements InterfaceControladorRequisicao
         );
 
         /** @var  $usuario */
-        $usuario = $this->repositorioUsuarios
+        $usuario = $this->entityManager
             ->findOneBy(['email' => $email]);
-
+            
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
-  
-            $this->defineMensagem('danger', 'E-mail ou senha incorreto! dados inválidos');
-
-            header('Location: /login');
-            return;
+            $html = [
+                $this->defineMensagem('danger', 'E-mail ou senha incorreto! dados inválidos'),
+                header('Location: /login')
+            ];
+            return new Response(200, [], $html);
         }
 
         $_SESSION['usuario_logado'] = true;
         $_SESSION['nome_usuario'] = $usuario->getEmail();
-      
-        $this->defineMensagem('info', "<p>Bem Vindo(a)! <strong><i>{$usuario->getEmail()}</strong></i></p>");
-        header('Location: /listar-cursos');
+
+        $html = [
+            $this->defineMensagem('info', "<p>Usuário Logado com Sucesso!</p>"),
+            header('Location: /listar-cursos')
+        ];
+        return new Response(200, [], $html);
     }
 }
